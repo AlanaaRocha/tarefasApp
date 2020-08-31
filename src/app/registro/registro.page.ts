@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms'
 import { Router } from '@angular/router';
+import { CpfValidator } from '../validators/cpf-validator';
+import { ComparaValidator } from '../validators/comparacao-validator';
+
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.page.html',
@@ -18,7 +21,8 @@ public mensagens_validacao = {
   cpf: [
     {tipo: 'required', mensagem: 'O campo cpf é obrigatório'},
     {tipo: 'minLength', mensagem: 'O cpf deve ter pelo menos 11 caracteres'},
-    {tipo: 'maxLength', mensagem: 'O cpf deve ter no máximo 14 caracteres'}
+    {tipo: 'maxLength', mensagem: 'O cpf deve ter no máximo 14 caracteres'},
+    {tipo: 'invalido', mensagem: 'cpf invalido'}
   ],
   data:[
     {tipo: 'required', mensagem: 'O campo data é obrigatório'},
@@ -27,6 +31,7 @@ public mensagens_validacao = {
     {tipo: 'required', mensagem: 'O campo senha é obrigatório'},
   ],
   celular: [
+    {tipo: 'minLength', mensagem: 'O celular deve ter pelo menos 10 caracteres'},
     {tipo: 'maxLength', mensagem: 'O celular deve ter no máximo 16 caracteres'}
   ],
   email: [
@@ -39,20 +44,25 @@ public mensagens_validacao = {
   ],
   confirmar: [
     {tipo: 'required', mensagem: 'O campo confirmar senha é obrigatório'},
-    {tipo: 'minLength', mensagem: 'A senha deve ter pelo menos 6 caracteres'}
+    {tipo: 'minLength', mensagem: 'A senha deve ter pelo menos 6 caracteres'},
+    {tipo: 'comparacao', mensagem: 'deve ser igual a senha'}
   ]
   
 };
   constructor(private formBuilder: FormBuilder, private router: Router) { 
     this.formRegistro = formBuilder.group({
       nome:['', Validators.compose([Validators.required, Validators.minLength(3)])],
-      cpf:['', Validators.compose([Validators.required, Validators.minLength(11), Validators.maxLength(14)])],
+      cpf:['', Validators.compose([Validators.required, Validators.minLength(11), Validators.maxLength(14),
+      CpfValidator.cpfValido
+      ])],
       data:['', Validators.compose([Validators.required])],
       genero:['', Validators.compose([Validators.required])],
-      celular:['', Validators.compose([Validators.maxLength(16)])],
+      celular:['', Validators.compose([Validators.minLength(10), Validators.maxLength(16)])],
       email:['', Validators.compose([Validators.required, Validators.email])],
       senha:['', Validators.compose([Validators.required, Validators.minLength(6)])],
       confirmar:['', Validators.compose([Validators.required, Validators.minLength(6)])]
+    }, {
+     validator: ComparaValidator('senha', 'confirma')
     });
   }
 
