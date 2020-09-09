@@ -61,6 +61,19 @@ public mensagens_validacao = {
     ) { 
     this.formRegistro = formBuilder.group({
 
+      nome: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
+      cpf: ['', Validators.compose([
+                Validators.required,
+                Validators.minLength(11),
+                Validators.maxLength(14),
+                CpfValidator.cpfValido
+      ])],
+      dataNascimento: ['', Validators.compose([Validators.required])],
+      genero: ['', Validators.compose([Validators.required])],
+      celular: ['', Validators.compose([Validators.minLength(10), Validators.maxLength(16)])],
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      senha: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+      confirmar: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
     }, {
     
      validator: ComparaValidator('senha', 'confirma')
