@@ -59,6 +59,10 @@ return usuario;
   public async buscarUsuarioLogado(){
     return await this.armazenamentoService.pegarDados('usuarioLogado');
   }
+
+  public async removerUsuarioLogado(){
+    return await this.armazenamentoService.removerDados('usuarioLogado');
+  }
 }
 
  
